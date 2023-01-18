@@ -16,6 +16,7 @@
         }
     </style>
 @endpush
+
 @section('content')
     {!! Form::open(['method' => 'POST', 'route' => ['admin.tests.store']]) !!}
 
@@ -71,33 +72,6 @@
                     {!! Form::color('color2', old('color2'), ['class' => 'form-control ']) !!}
                 </div>
             </div>
-{{--            <div class="row Secondary card bg-light">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h5>Default Options</h5>--}}
-{{--                </div>--}}
-{{--                <div class="row card-body">--}}
-{{--                    <div class="col-12 col-lg-4 form-group">--}}
-{{--                        {!! Form::label('font', trans('labels.backend.tests.fields.default_font'), ['class' => 'control-label']) !!}--}}
-{{--                        <select class="form-control" name="default_font">--}}
-{{--                            @foreach($font_family as $fm)--}}
-{{--                                <option value="{{$fm}}" style="font-family: {{$fm}}">{{$fm}}</option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-12 col-lg-4 form-group">--}}
-{{--                        {!! Form::label('size',trans('labels.backend.tests.fields.default_font_size'), ['class' => 'control-label']) !!}--}}
-{{--                        <select class="form-control" name="default_font_size">--}}
-{{--                            @foreach($font_size as $fs)--}}
-{{--                                <option value={{$fs}} style="font-size: {{$fs}}px">{{$fs}}</option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-12 col-lg-4 form-group">--}}
-{{--                        {!! Form::label('color',trans('labels.backend.tests.fields.default_color'), ['class' => 'control-label']) !!}--}}
-{{--                        {!! Form::color('default_font_color', old('default_font_color'), ['class' => 'form-control ']) !!}--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::hidden('published', 0) !!}
@@ -111,11 +85,36 @@
     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
+
 @push('after-scripts')
     <script src="https://cdn.ckeditor.com/4.20.1/standard-all/ckeditor.js"></script>
 
     <script>
-        CKEDITOR.replace('text1', {
+        var text1_editor = CKEDITOR.replace('text1', {
+            uiColor: '#8ab10b',
+            toolbarGroups: [{
+                "name": "basicstyles",
+                "groups": ["basicstyles"]
+            },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                },
+                {
+                    "name": "colors",
+                    "groups": ["colors"]
+                },
+            ],
+            extraPlugins: 'font,widget,colorbutton,colordialog,selectall'
+        });
+        text1_editor.setData('This is the processed text1.');
+        text1_editor.on("instanceReady", function(event) {
+            text1_editor.focus();
+            text1_editor.document.$.execCommand( 'SelectAll', false, null );
+            text1_editor.execCommand( 'removeFormat', text1_editor.getSelection().getNative() );
+        });
+
+        var text2_editor = CKEDITOR.replace('text2', {
             uiColor: '#8ab10b',
             toolbarGroups: [{
                 "name": "basicstyles",
@@ -132,23 +131,11 @@
             ],
             extraPlugins: 'font,widget,colorbutton,colordialog'
         });
-
-        CKEDITOR.replace('text2', {
-            uiColor: '#8ab10b',
-            toolbarGroups: [{
-                "name": "basicstyles",
-                "groups": ["basicstyles"]
-            },
-                {
-                    "name": "styles",
-                    "groups": ["styles"]
-                },
-                {
-                    "name": "colors",
-                    "groups": ["colors"]
-                },
-            ],
-            extraPlugins: 'font,widget,colorbutton,colordialog'
+        text2_editor.setData('This is the processed text2');
+        text2_editor.on("instanceReady", function(event) {
+            text2_editor.focus();
+            text2_editor.document.$.execCommand( 'SelectAll', false, null );
+            text2_editor.execCommand( 'removeFormat', text2_editor.getSelection().getNative() );
         });
 
     </script>
