@@ -111,7 +111,6 @@
         text1_editor.on("instanceReady", function(event) {
             text1_editor.focus();
             text1_editor.document.$.execCommand( 'SelectAll', false, null );
-            text1_editor.execCommand( 'removeFormat', text1_editor.getSelection().getNative() );
         });
 
         var text2_editor = CKEDITOR.replace('text2', {
@@ -135,7 +134,6 @@
         text2_editor.on("instanceReady", function(event) {
             text2_editor.focus();
             text2_editor.document.$.execCommand( 'SelectAll', false, null );
-            text2_editor.execCommand( 'removeFormat', text2_editor.getSelection().getNative() );
         });
     </script>
 @endpush

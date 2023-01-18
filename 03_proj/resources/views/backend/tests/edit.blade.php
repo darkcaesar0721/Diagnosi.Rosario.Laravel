@@ -17,10 +17,8 @@
 
     </style>
 @endpush
+
 @section('content')
-
-    <script src="https://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
-
     {!! Form::model($test, ['method' => 'PUT', 'route' => ['admin.tests.update', $test->id]]) !!}
 
     <div class="card">
@@ -53,13 +51,13 @@
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('text1', trans('labels.backend.tests.fields.text1'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('text1', old('text1'), ['class' => 'form-control ckeditor', 'placeholder' => '','name'=>'text1','id' => 'text1']) !!}
+                    {!! Form::textarea('text1', old('text1'), ['class' => 'form-control', 'placeholder' => '','name'=>'text1','id' => 'text1']) !!}
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('text2', trans('labels.backend.tests.fields.text2'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('text2', old('text2'), ['class' => 'form-control ckeditor', 'placeholder' => '','name'=>'text2','id' => 'text2']) !!}
+                    {!! Form::textarea('text2', old('text2'), ['class' => 'form-control', 'placeholder' => '','name'=>'text2','id' => 'text2']) !!}
                 </div>
             </div>
             <div class="row">
@@ -70,33 +68,6 @@
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('color2',trans('labels.backend.tests.fields.color2'), ['class' => 'control-label']) !!}
                     {!! Form::color('color2', old('color2'), ['class' => 'form-control ']) !!}
-                </div>
-            </div>
-            <div class="row Secondary card bg-light">
-                <div class="card-header">
-                    <h5>Default Options</h5>
-                </div>
-                <div class="row card-body">
-                    <div class="col-12 col-lg-4 form-group">
-                        {!! Form::label('font', trans('labels.backend.tests.fields.default_font'), ['class' => 'control-label']) !!}
-                        <select class="form-control" name="default_font">
-                            @foreach($font_family as $fm)
-                                <option value="{{$fm}}" @if($test->default_font == $fm) selected @endif style="font-family: {{$fm}}">{{$fm}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-lg-4 form-group">
-                        {!! Form::label('size',trans('labels.backend.tests.fields.default_font_size'), ['class' => 'control-label']) !!}
-                        <select class="form-control" name="default_font_size">
-                            @foreach($font_size as $fs)
-                                <option value={{$fs}} @if($test->default_font_size == $fs) selected @endif style="font-size: {{$fs}}px">{{$fs}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-lg-4 form-group">
-                        {!! Form::label('color',trans('labels.backend.tests.fields.default_color'), ['class' => 'control-label']) !!}
-                        {!! Form::color('default_font_color', old('default_font_color'), ['class' => 'form-control ']) !!}
-                    </div>
                 </div>
             </div>
             <div class="row">
@@ -112,21 +83,54 @@
 
     {!! Form::submit(trans('strings.backend.general.app_update'), ['class' => 'btn  btn-danger']) !!}
     {!! Form::close() !!}
-
-    <script>
-        CKEDITOR.replace('text1', {
-            height : 150,
-            filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
-            filebrowserUploadMethod: 'form',
-            extraPlugins: 'font,widget,colorbutton,colordialog,justify',
-        });
-        CKEDITOR.replace('text2', {
-            height : 150,
-            filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
-            filebrowserUploadMethod: 'form',
-            extraPlugins: 'font,widget,colorbutton,colordialog,justify',
-        });
-    </script>
-    
 @stop
 
+@push('after-scripts')
+    <script src="https://cdn.ckeditor.com/4.20.1/standard-all/ckeditor.js"></script>
+
+    <script>
+        var text1_editor = CKEDITOR.replace('text1', {
+            // uiColor: '#8ab10b',
+            toolbarGroups: [{
+                "name": "basicstyles",
+                "groups": ["basicstyles"]
+            },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                },
+                {
+                    "name": "colors",
+                    "groups": ["colors"]
+                },
+            ],
+            extraPlugins: 'font,widget,colorbutton,colordialog,selectall'
+        });
+        text1_editor.on("instanceReady", function(event) {
+            text1_editor.focus();
+            text1_editor.document.$.execCommand( 'SelectAll', false, null );
+        });
+
+        var text2_editor = CKEDITOR.replace('text2', {
+            // uiColor: '#8ab10b',
+            toolbarGroups: [{
+                "name": "basicstyles",
+                "groups": ["basicstyles"]
+            },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                },
+                {
+                    "name": "colors",
+                    "groups": ["colors"]
+                },
+            ],
+            extraPlugins: 'font,widget,colorbutton,colordialog'
+        });
+        text2_editor.on("instanceReady", function(event) {
+            text2_editor.focus();
+            text2_editor.document.$.execCommand( 'SelectAll', false, null );
+        });
+    </script>
+@endpush
