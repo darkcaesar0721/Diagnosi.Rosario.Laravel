@@ -14,29 +14,9 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 35px;
         }
-
-        #cke_text1 {
-            height: 120px;
-        }
-
-        #cke_text2 {
-            height: 120px;
-        }
-
-        #cke_1_bottom {
-            display: none;
-        }
-
-        #cke_2_bottom {
-            display: none;
-        }
-
     </style>
 @endpush
 @section('content')
-    
-    <script src="https://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
-
     {!! Form::open(['method' => 'POST', 'route' => ['admin.tests.store']]) !!}
 
     <div class="card">
@@ -72,13 +52,13 @@
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('text1', trans('labels.backend.tests.fields.text1'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('text1', old('text1'), ['class' => 'form-control ckeditor', 'placeholder' => '','name'=>'text1','id' => 'text1']) !!}
+                    {!! Form::textarea('text1', old('text1'), ['class' => 'form-control', 'placeholder' => '','name'=>'text1','id' => 'text1']) !!}
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 form-group">
                     {!! Form::label('text2', trans('labels.backend.tests.fields.text2'), ['class' => 'control-label']) !!}
-                    {!! Form::textarea('text2', old('text2'), ['class' => 'form-control ckeditor', 'placeholder' => '','name'=>'text2','id' => 'text2']) !!}
+                    {!! Form::textarea('text2', old('text2'), ['class' => 'form-control', 'placeholder' => '','name'=>'text2','id' => 'text2']) !!}
                 </div>
             </div>
             <div class="row">
@@ -130,58 +110,48 @@
 
     {!! Form::submit(trans('strings.backend.general.app_save'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
+@stop
+@push('after-scripts')
+    <script src="https://cdn.ckeditor.com/4.20.1/standard-all/ckeditor.js"></script>
 
     <script>
-
-        var editor_text1 = CKEDITOR.replace('text1', {
-            height : 0,
-            filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
-            filebrowserUploadMethod: 'form',
-            extraPlugins: 'font,colorbutton,colordialog,justify',
+        CKEDITOR.replace('text1', {
+            uiColor: '#8ab10b',
+            toolbarGroups: [{
+                "name": "basicstyles",
+                "groups": ["basicstyles"]
+            },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                },
+                {
+                    "name": "colors",
+                    "groups": ["colors"]
+                },
+            ],
+            extraPlugins: 'font,widget,colorbutton,colordialog'
         });
 
-        var callback_editor_text1 = function (event) {
-            if (editor_text1.getSelection().getSelectedText().toString() == '') {
-                var commandName = event.data.name;
-                var selection = editor_text1.getSelection();
-                var selectedElement = selection.getSelectedElement();
-                if (!selectedElement)
-                    selectedElement = new CKEDITOR.dom.element('p');
-                selectedElement.setHtml("<p>Question Description</p>");
-                editor_text1.insertElement(selectedElement);
-                selection.selectElement(selectedElement);
-            }
-        }
-
-        editor_text1.on('SelectionChange', callback_editor_text1);
-        editor_text1.on('Change', callback_editor_text1);
-        editor_text1.on('afterCommandExec', callback_editor_text1);
-
-        var editor_text2 = CKEDITOR.replace('text2', {
-            height : 150,
-            filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
-            filebrowserUploadMethod: 'form',
-            extraPlugins: 'font,colorbutton,colordialog,justify',
+        CKEDITOR.replace('text2', {
+            uiColor: '#8ab10b',
+            toolbarGroups: [{
+                "name": "basicstyles",
+                "groups": ["basicstyles"]
+            },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                },
+                {
+                    "name": "colors",
+                    "groups": ["colors"]
+                },
+            ],
+            extraPlugins: 'font,widget,colorbutton,colordialog'
         });
-
-        var callback_editor_text2 = function(event) {
-            if (editor_text2.getSelection().getSelectedText().toString() == '') {
-                var commandName = event.data.name;
-                var selection = editor_text2.getSelection();
-                var selectedElement = selection.getSelectedElement();
-                if (!selectedElement)
-                    selectedElement = new CKEDITOR.dom.element('p');
-                selectedElement.setHtml("<p>Question Help and Information</p>");
-                editor_text2.insertElement(selectedElement);
-                selection.selectElement(selectedElement);
-            }
-        }
-
-        editor_text2.on('SelectionChange', callback_editor_text2);
-        editor_text2.on('Change', callback_editor_text2);
-        editor_text2.on('afterCommandExec', callback_editor_text2);
 
     </script>
-@stop
+@endpush
 
 
