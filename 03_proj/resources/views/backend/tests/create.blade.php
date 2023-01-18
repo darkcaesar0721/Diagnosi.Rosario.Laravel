@@ -91,7 +91,7 @@
 
     <script>
         var text1_editor = CKEDITOR.replace('text1', {
-            uiColor: '#8ab10b',
+            // uiColor: '#8ab10b',
             toolbarGroups: [{
                 "name": "basicstyles",
                 "groups": ["basicstyles"]
@@ -115,7 +115,7 @@
         });
 
         var text2_editor = CKEDITOR.replace('text2', {
-            uiColor: '#8ab10b',
+            // uiColor: '#8ab10b',
             toolbarGroups: [{
                 "name": "basicstyles",
                 "groups": ["basicstyles"]
@@ -137,8 +137,5 @@
             text2_editor.document.$.execCommand( 'SelectAll', false, null );
             text2_editor.execCommand( 'removeFormat', text2_editor.getSelection().getNative() );
         });
-
     </script>
 @endpush
-
-
