@@ -644,7 +644,7 @@
             <form id="checkForm">
             <div class="row">
                     <div class="col-2 p-0"><span class="q_number gradient-bg my-auto" style="background: {{$lesson->color1}} !important">{{$q_number++}}</span></div>
-                    <div class="col-8 p-0" style="text-align: center; margin-top: -23px;">
+                    <div class="col-8 p-0" style="text-align: center; margin-top: 3px;">
                         
                         @if($question->titlelocation == 'col-12 order-1')
                         {!! html_entity_decode($question->question) !!}
