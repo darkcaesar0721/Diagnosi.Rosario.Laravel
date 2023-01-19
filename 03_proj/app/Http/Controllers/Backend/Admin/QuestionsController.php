@@ -158,7 +158,7 @@ class QuestionsController extends Controller
             $course_test_list[$i] = json_decode(json_encode($temp),true);                
         }
       
-        $tests =DB::table('tests')->select('title','id', 'text1', 'text2', 'color1', 'color2', 'default_font', 'default_font_size', 'default_font_color')->get();
+        $tests =DB::table('tests')->select('title','id', 'text1', 'text2', 'color1', 'color2')->get();
         $last_q_id = DB::table('questions')->select('id')->orderBy('id','DESC')->first();
         $last_id = 1;
         if($last_q_id != null)
@@ -597,7 +597,7 @@ class QuestionsController extends Controller
             $course_test_list[$i] = json_decode(json_encode($temp),true);                
         }
 
-        $tests =DB::table('tests')->select('title','id', 'color1', 'color2', 'default_font', 'default_font_size', 'default_font_color')->get();
+        $tests =DB::table('tests')->select('title','id', 'color1', 'color2', 'text1', 'text2')->get();
 
         $test_list =DB::table('question_test')    
         ->select('test_id')

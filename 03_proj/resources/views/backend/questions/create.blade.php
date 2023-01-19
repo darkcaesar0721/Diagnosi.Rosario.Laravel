@@ -2,9 +2,7 @@
 @section('title', __('labels.backend.questions.title').' | '.app_name())
 
 @section('content')
-    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
-         rel = "stylesheet">
-
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
 
     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -28,7 +26,7 @@
                     {!! Form::label('tests', 'Test', ['class' => 'control-label']) !!}
                      <select class="form-control select2 required" name="tests_id" id="tests_id" placeholder="Options" multiple>
                         @foreach($tests as $test)
-                            <option value="{{$test->id}}" data-text1="{{$test->text1}}" data-text2="{{$test->text2}}" data-color1="{{$test->color1}}" data-color2="{{$test->color2}}" data-default_font="{{$test->default_font}}" data-default_font_size="{{$test->default_font_size}}" data-default_font_color="{{$test->default_font_color}}">{{$test->title}}</option>
+                            <option value="{{$test->id}}" data-text1="{{$test->text1}}" data-text2="{{$test->text2}}" data-color1="{{$test->color1}}" data-color2="{{$test->color2}}">{{$test->title}}</option>
                         @endforeach  
                     </select>
                     <div id="tests_id1"></div>
@@ -55,26 +53,43 @@
                     <div id="question_edit" class="card-body">
                         <div class="row">
                             <div class="col-12" >
-                                    <div class="form-group">
-                                        <div class="form-group form-md-line-input has-info" style="margin-top:10px">
+                                <div class="mt-2">
+                                    <img id="preview" src="" width="100%">
+                                    <form id="question_type_image" action="" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label class="form-label">Image</label>
+                                            <input type="file" id="img" class="form-control" name="file[]" accept="image/*">
+                                            <input type="hidden" id="quiz_img" name="quiz_img" value="">
+                                        </div>
+                                    </form>
+                                    <input type="hidden" name="last_q_id" id="last_q_id" value="{{$last_q_id}}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-md-line-input has-info">
                                             <textarea name="question_content" id="question_content" class="form-control ckeditor"></textarea>
                                             <!-- <input type="text" class="form-control"   id="question_content"> -->
                                             {{--{!! Form::textarea('content', '', ['class' => 'form-control editor', 'placeholder' => '','name'=>'question_content','id' => 'question_content']) !!}--}}
                                             <label for="question_content">Question</label>
-                                        </div>               
+                                        </div>
                                         <div class="row">
-                                            <div class="col-12 col-lg-6 form-group">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-12 col-md-6 form-group">
                                                 {!! Form::label('color1',trans('labels.backend.tests.fields.color1'), ['class' => 'control-label']) !!}
                                                 {!! Form::color('color1', '', ['class' => 'form-control ', 'name'=>'color1']) !!}
                                             </div>
-                                        </div>           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group form-md-line-input has-info">
                                             <textarea name="help-editor" id="help-editor" class="form-control ckeditor"></textarea>
                                             {{--{!! Form::textarea('content', '', ['class' => 'form-control editor', 'placeholder' => '','id' => 'help-editor']) !!}--}}
                                             <label for="question_help_info">Question Help or Information</label>
-                                        </div>  
+                                        </div>
                                         <div class="row">
-                                            <div class="col-12 col-lg-6 form-group">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-12 col-md-6 form-group">
                                                 {!! Form::label('color2',trans('labels.backend.tests.fields.color2'), ['class' => 'control-label']) !!}
                                                 {!! Form::color('color2', '', ['class' => 'form-control ', 'name'=>'color2']) !!}
                                             </div>
@@ -84,23 +99,11 @@
                                                 {{ $errors->first('question') }}
                                             </p>
                                         @endif
-                                    </div>    
-                                    <div class="mt-2">
-                                        <img id="preview" src="" width="100%">
-                                        <form id="question_type_image" action="" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label class="form-label">Image</label>
-                                                <input type="file" id="img" class="form-control" name="file[]" accept="image/*">
-                                                <input type="hidden" id="quiz_img" name="quiz_img" value="">
-                                                
-                                            </div>
-                                        </form>
-                                        <input type="hidden" name="last_q_id" id="last_q_id" value="{{$last_q_id}}">
-                                    </div>       
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>     
+                    </div>
                 </div>
                 {{-- Question Type --}}
                 <div class="card">
@@ -497,14 +500,14 @@
     <script src="{{asset('/vendor/laravel-filemanager/js/lfm.js')}}"></script>
     <script>
 
-        var editor_question = CKEDITOR.replace('question_content', {
+        var text1_editor = CKEDITOR.replace('question_content', {
             height : 300,
             filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
             filebrowserUploadMethod: 'form',
             extraPlugins: 'font,widget,colorbutton,colordialog,justify',
         });
 
-        var editor_help = CKEDITOR.replace('help-editor', {
+        var text2_editor = CKEDITOR.replace('help-editor', {
             height : 300,
             filebrowserUploadUrl: `{{route('admin.questions.editor_fileupload',['_token' => csrf_token() ])}}`,
             filebrowserUploadMethod: 'form',
@@ -531,38 +534,22 @@
                     var color2 = selectedOption.data('color2');
                     var text1 = selectedOption.data('text1');
                     var text2 = selectedOption.data('text2');
-                    console.log(text1);
-
-                    // var default_font = selectedOption.data('default_font');
-                    // var default_font_size = selectedOption.data('default_font_size');
-                    // var default_font_color = selectedOption.data('default_font_color');
 
                     $('#color1').val(color1);
                     $('#color2').val(color2);
                     $('#color').val(color1);
 
-                    var selection = editor_question.getSelection();
-                    var selectedElement = selection.getSelectedElement();
-                    if (!selectedElement)
-                        selectedElement = new CKEDITOR.dom.element('p');
-                    text1 = text1.replace("<p>&nbsp;</p>", "");
-                    console.log(text1);
-                    selectedElement.setHtml(text1.replace('<p>&nbsp;</p>', ''));
-                    editor_question.insertElement(selectedElement);
-                    selection.selectElement(selectedElement);
+                    text1_editor.setData(text1);
+                    text1_editor.on("instanceReady", function(event) {
+                        text1_editor.focus();
+                        text1_editor.document.$.execCommand( 'SelectAll', false, null );
+                    });
 
-                    var selection = editor_help.getSelection();
-                    var selectedElement = selection.getSelectedElement();
-                    if (!selectedElement)
-                        selectedElement = new CKEDITOR.dom.element('p');
-                    selectedElement.setHtml(text2.replace('<p>&nbsp;</p>', ''));
-                    editor_help.insertElement(selectedElement);
-                    selection.selectElement(selectedElement);
-
-                    // $('.container-fluid').attr('style', "font-family: " + default_font + " !important;");
-                    // $('#color1').val(default_font_color);
-                    // $('#color2').val(default_font_color);
-                    // $('#color').val(default_font_color);
+                    text2_editor.setData(text2);
+                    text2_editor.on("instanceReady", function(event) {
+                        text2_editor.focus();
+                        text2_editor.document.$.execCommand( 'SelectAll', false, null );
+                    });
                 }
             })
         });
